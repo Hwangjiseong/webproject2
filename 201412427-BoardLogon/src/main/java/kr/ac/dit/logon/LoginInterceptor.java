@@ -21,15 +21,17 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 	@Override
 	public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
 	Object handler, ModelAndView modelAndView) throws Exception {
-	HttpSession httpSession = httpServletRequest.getSession();
-	ModelMap modelMap = modelAndView.getModelMap();
-	Object memberVO = modelMap.get("memberVO");
-	if (memberVO != null) {
-	httpSession.setAttribute("login", memberVO);
-	httpServletResponse.sendRedirect("/");
+		HttpSession httpSession = httpServletRequest.getSession();
+		ModelMap modelMap = modelAndView.getModelMap();
+		Object memberVO = modelMap.get("memberVO");
+		if (memberVO != null) {
+		httpSession.setAttribute("login", memberVO);
+		Object saveDirect = httpSession.getAttribute("saveDirect");
+		System.out.println(saveDirect != null ? saveDirect : "Null");
+		httpServletResponse.sendRedirect(saveDirect != null ? (String)saveDirect:"/");
 
-	}
+		}
 
-	}
-}
+		}
 
+		}
