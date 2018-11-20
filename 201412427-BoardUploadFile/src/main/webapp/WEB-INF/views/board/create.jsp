@@ -19,7 +19,7 @@
 			<div class="form-group">
 			<label for="title" class="col-xs-2 col-lg-2 control-label">제목</label>
 			<div class="col-xs-10 col-lg-10">
-				<input type="text" class="form-control" name="title" size="20">
+				<input type="text" class="form-control" name="title" size="20" >
 			</div>
 			</div>
 			<div class="form-group">
@@ -31,7 +31,7 @@
 			<div class="form-group">
 			<label for="uploadFile" class="col-xs-2 col-lg-2 control-label">첨부파일</label>
 			<div class="col-xs-10 col-lg-10">
-				<input type="file" class="form-control" name=""uploadFile"" size="20">
+				<input type="file" class="form-control" name=""uploadFile"" size="20" multiple>
 			</div>
 			</div>
 			<div class="form-group">

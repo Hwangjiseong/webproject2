@@ -1,12 +1,20 @@
 package kr.ac.dit.controller;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.ac.dit.domain.BoardVO;
@@ -24,17 +32,18 @@ public class BoardController {
 	}
 	@RequestMapping(value = "/board/createPost", method = RequestMethod.POST)
 	public String createPOST(BoardVO boardVO) throws Exception {
-		   MultipartFile uploadFile = boardVO.getUploadFile();
-		   if (!uploadFile.isEmpty()) {
-		     String fileName = uploadFile.getOriginalFilename();
-		     uploadFile.transferTo(new File("C:/upload/" + fileName));
-		   }
+		 MultipartFile[] uploadFile = boardVO.getUploadFile();
+		  for (MultipartFile eachFile : uploadFile) {
+		   String fileName = eachFile.getOriginalFilename();
+		   eachFile.transferTo(new File("c:/upload/" + fileName));
+		  }
 		boardService.createArticle(boardVO);
 		return "redirect:/board/list";
 	}
 	@RequestMapping("/board/read")
 	public void readGET(@RequestParam("no") int no, Model model) throws Exception {
-		model.addAttribute(boardService.readArticle(no));
+		model.addAttribute("boardVO", boardService.readArticle(no));
+		  model.addAttribute("items", boardService.readAttachFile(no));
 	}
 	@RequestMapping(value = "/board/update", method = RequestMethod.GET)
 	public void updateGET(@RequestParam("no") int no, Model model) throws Exception {
@@ -50,4 +59,24 @@ public class BoardController {
 		boardService.deleteArticle(no);
 		return "redirect:/board/list";
 	}
+	 @ResponseBody
+	 @RequestMapping("/download")
+	 public ResponseEntity<byte[]> download(@RequestParam("fileName") String fileName) throws Exception {
+	  ResponseEntity<byte[]> responseEntity = null;
+	  InputStream inputStream = null;
+	  try {
+	   HttpHeaders httpHeaders = new HttpHeaders();
+	   inputStream = new FileInputStream("c:/upload/"+fileName);
+	   httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	   httpHeaders.add("Content-Disposition", "attatchment; filename=\"" +
+	     new String(fileName.getBytes("UTF-8"), "ISO-8859-1") + "\"");
+
+	   responseEntity = new ResponseEntity<byte[]>(IOUtils.toByteArray(inputStream), httpHeaders, HttpStatus.CREATED);
+	  } catch(Exception e) {
+	   e.printStackTrace();
+	  } finally {
+	   inputStream.close();
+	  }
+	  return responseEntity;
+	 }
 }

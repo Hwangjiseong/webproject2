@@ -28,4 +28,13 @@ public class BoardDAOImpl implements BoardDAO {
 	public void delete(int no) throws Exception {
 		sqlSession.delete("BoardMapper.delete", no); 
 	}
+	@Override
+	public void insertAttachFile(String fileName) {
+		sqlSession.insert("BoardMapper.insertAttachFile",fileName);
+		
+	}
+	@Override
+	public List<String> selectAttachFile(int no) {
+		return sqlSession.selectList("BoardMapper.selectAttachFile", no);
+	}
 }

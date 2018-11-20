@@ -7,4 +7,6 @@ public interface BoardDAO {
 	public BoardVO select(int no) throws Exception;
 	public void update(BoardVO boardVO) throws Exception;
 	public void delete(int no) throws Exception;
+	public void insertAttachFile(String fileName);
+	public List<String> selectAttachFile(int no);
 }

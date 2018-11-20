@@ -9,11 +9,11 @@ public class BoardVO {
 	private String content;
 	private Timestamp createDate;
 	private int readCount;
-	 private MultipartFile uploadFile;
-	public MultipartFile getUploadFile() {
+	 private MultipartFile[] uploadFile;
+	public MultipartFile[] getUploadFile() {
 		return uploadFile;
 	}
-	public void setUploadFile(MultipartFile uploadFile) {
+	public void setUploadFile(MultipartFile[] uploadFile) {
 		this.uploadFile = uploadFile;
 	}
 	public int getNo() {

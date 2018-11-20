@@ -10,4 +10,5 @@ public interface BoardService {
 	public BoardVO readArticle(int no) throws Exception;
 	public void updateArticle(BoardVO boardVO) throws Exception;
 	public void deleteArticle(int no) throws Exception;
+	public List<String> readAttachFile(int no);
 }
